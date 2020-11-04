@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
+import warnings
 
 
 class Analyzer:
@@ -52,22 +53,33 @@ class Analyzer:
                  Categorical Columns - list
         ** Return: bar plot
         """
-        if cols == None: cols = [cname for cname in data.columns if data[cname].dtype == 'object' and data[cname].nunique() < 20]
-        for col in cols: 
-            if col in data.columns:
-                sns.countplot(y=col, hue=hue, data=data)
-                plt.show()
+        try:
+            if cols == None: cols = [cname for cname in data.columns if data[cname].dtype == 'object' and data[cname].nunique() < 20]
+            for col in cols: 
+                if col in data.columns:
+                    sns.countplot(y=col, hue=hue, data=data)
+                    plt.show();
+        except:
+            print('numpy.ndarray has no categorical data')
                 
     def numerical_plot(self, data, hue, cols=None, kde=True):
         """Return a plot of numerical features in a data
-        ** Args: Data - pandas dataframe
+        ** Args: Data - pandas dataframe, numpy array
                  Hue - string
                  cols - features list
         ** Return: bar plot
         """
-        if cols == None: cols = [cname for cname in data.columns if data[cname].dtype in ['int', 'float']]
-        for col in cols: 
-            if col in data.columns:
-                sns.displot(x=col, multiple='stack', kde=True, hue=hue, data=data)
-                plt.title(col + 'Distribution')
-                plt.show()
+        try:
+            if cols == None: cols = [cname for cname in data.columns if data[cname].dtype in ['int', 'float']]
+            for col in cols: 
+                if col in data.columns:
+                    sns.displot(x=col, multiple='stack', kde=True, hue=hue, data=data)
+                    plt.title(col + 'Distribution')
+                    plt.show();
+        except:
+            for col in range(len(data)):
+                sns.displot(x=data[col], multiple='stack', kde=True, data=data)
+                plt.title('Distribution' + str(col))
+                plt.show();
+
+

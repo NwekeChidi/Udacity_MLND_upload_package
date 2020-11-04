@@ -121,6 +121,9 @@ class ModelEngineering(Preprocessor):
             print(f"Train Score: {train_score:.4f},    Test Score: {test_score:.4f}")
     
     def fill_and_score(self, data, target, fill_w=['mean', 'median', 'std', 0, -999]):
+        """ Fills null values differently while returning model performance
+        on each filling type
+        """
         for i in range(len(fill_w)):
             print('filling null with: ', fill_w[i], '.......')
             cols = data.columns
